@@ -18,7 +18,6 @@ static Tensor* flatten_targets(Tensor* t) {
     fprintf(stderr, "cross_entropy_loss: unsupported target shape\n");
     exit(1);
 }
-
 typedef struct {
     Tensor* predictions;
     Tensor* targets;
