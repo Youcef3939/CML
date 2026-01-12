@@ -10,7 +10,6 @@ static int check_same_shape(Tensor* a, Tensor* b) {
         if (a->shape[i] != b->shape[i]) return 0;
     return 1;
 }
-
 static void add_parent(Tensor* t, Tensor* parent) {
     t->parents = (Tensor**)realloc(t->parents, sizeof(Tensor*) * (t->n_parents + 1));
     t->parents[t->n_parents] = parent;
@@ -33,7 +32,6 @@ Tensor* tensor_sub(Tensor* a, Tensor* b) {
     if (out->requires_grad) { add_parent(out, a); add_parent(out, b); out->backward = NULL; }
     return out;
 }
-
 Tensor* tensor_mul(Tensor* a, Tensor* b) {
     if (!check_same_shape(a, b)) { fprintf(stderr, "tensor_mul shape mismatch\n"); return NULL; }
     Tensor* out = tensor_zeros(a->ndim, a->shape, a->requires_grad || b->requires_grad);
@@ -55,7 +53,6 @@ Tensor* tensor_div_scalar(Tensor* a, float scalar) {
     if (out->requires_grad) add_parent(out, a);
     return out;
 }
-
 Tensor* tensor_sum(Tensor* a) {
     Tensor* out = tensor_zeros(0, NULL, a->requires_grad);
     float total = 0.0f;
@@ -102,7 +99,6 @@ Tensor* tensor_matmul(Tensor* a, Tensor* b) {
     if (out->requires_grad) { add_parent(out, a); add_parent(out, b); out->backward = NULL; }
     return out;
 }
-
 Tensor* tensor_exp(Tensor* a) {
     Tensor* out = tensor_zeros(a->ndim, a->shape, a->requires_grad);
     for (int i = 0; i < a->size; i++) out->data[i] = expf(a->data[i]);
