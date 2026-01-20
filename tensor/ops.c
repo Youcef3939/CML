@@ -201,8 +201,8 @@ Tensor* tensor_gather(Tensor* a, Tensor* indices) {
     if (a->ndim != 2 || indices->ndim != 1 || a->shape[0] != indices->shape[0]) { fprintf(stderr, "tensor_gather shape mismatch\n"); return NULL; }
     int N = a->shape[0];
     Tensor* out = tensor_zeros(1, &N, a->requires_grad);
-    for (int i = 0; i < N; i++) {
-        int idx = (int)indices->data[i];
+    for (int i = 0; i < N; i++) { 
+        int idx = (int)indices->data[i]; 
         out->data[i] = a->data[i*a->shape[1] + idx];
     }
     if (out->requires_grad) add_parent(out, a);
