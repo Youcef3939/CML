@@ -119,11 +119,11 @@ Tensor* cross_entropy_loss(Tensor* logits, Tensor* targets) {
     Tensor* sum_exp = tensor_sum_axis(exp_logits, 1);
     Tensor* log_sum = tensor_log(sum_exp);
     Tensor* target_logits = tensor_gather(logits, flat_targets);
-    Tensor* diff = tensor_sub(log_sum, target_logits);
+    Tensor* diff = tensor_sub(log_sum, target_logits); 
     Tensor* loss_sum = tensor_sum(diff);
     Tensor* loss = tensor_div_scalar(loss_sum, (float)N);
 
-    CEContext* ctx = malloc(sizeof(CEContext));
+    CEContext* ctx = malloc(sizeof(CEContext)); 
     ctx->logits = logits;
     ctx->targets = flat_targets; 
     ctx->N = N;
@@ -132,7 +132,7 @@ Tensor* cross_entropy_loss(Tensor* logits, Tensor* targets) {
     loss->backward = (void*)ctx;
 
     tensor_release(max_logits);
-    tensor_release(shifted);
+    tensor_release(shifted); 
     tensor_release(exp_logits);
     tensor_release(sum_exp);
     tensor_release(log_sum);
