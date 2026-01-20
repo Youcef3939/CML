@@ -64,7 +64,7 @@ void engine_register(Tensor* t) {
 }
 
 void engine_clear() {
-    for (int i = 0; i < engine.count; i++) {
+    for (int i = 0; i < engine.count; i++) { 
         Node* n = engine.nodes[i];
         for (int j = 0; j < n->n_children; j++)
             free(n->children[j]);
