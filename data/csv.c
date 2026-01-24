@@ -13,7 +13,6 @@ static int count_columns(const char* line) {
     }
     return count + 1;
 }
-
 static int count_rows(FILE* fp) {
     int rows = 0;
     char buffer[1024];
@@ -55,7 +54,6 @@ Tensor* tensor_from_csv(const char* path) {
     }
 
     fclose(fp);
-
     Tensor* t = malloc(sizeof(Tensor));
     t->ndim = 2;
     t->shape = malloc(sizeof(int) * 2);
