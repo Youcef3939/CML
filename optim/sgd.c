@@ -1,7 +1,6 @@
 #include "sgd.h"
 #include <stdlib.h>
 #include "../tensor/tensor.h"
-
 void sgd_step(Tensor* param, float lr) {
     if (!param || !param->grad) return;
     for (int i = 0; i < param->size; i++) {
