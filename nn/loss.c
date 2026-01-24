@@ -23,7 +23,6 @@ typedef struct {
     Tensor* targets;
     int N;
 } MSEContext;
-
 void mse_backward(Tensor* self) {
     MSEContext* ctx = (MSEContext*)self->backward;
     Tensor* pred = ctx->predictions;
@@ -97,7 +96,6 @@ void ce_backward(Tensor* self) {
     tensor_release(grad);
     free(ctx);
 }
-
 Tensor* cross_entropy_loss(Tensor* logits, Tensor* targets) {
     int N = logits->shape[0];
     int C = logits->shape[1];
@@ -139,6 +137,5 @@ Tensor* cross_entropy_loss(Tensor* logits, Tensor* targets) {
     tensor_release(target_logits);
     tensor_release(diff);
     tensor_release(loss_sum);
-
     return loss;
 }
