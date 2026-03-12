@@ -8,7 +8,7 @@
 #include "optim/sgd.h"
 
 int main() {
-    Tensor* X = tensor_from_csv("data/train_X.csv"); 
+    Tensor* X = tensor_from_csv("data/train_X.csv");  
     Tensor* y = tensor_from_csv("data/train_y.csv"); 
 
     printf("X shape: %d x %d\n", X->shape[0], X->shape[1]);
