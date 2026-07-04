@@ -252,4 +252,83 @@ every abstraction exists because it is necessary not because it is fashionable
 
 ---
 
+## diagram
+
+```mermaid
+flowchart TD
+
+subgraph group_data["Data I/O"]
+  node_csv["CSV Loader<br/>input parser<br/>[csv.c]"]
+  node_train_x["Train X<br/>sample data<br/>[train_X.csv]"]
+  node_train_y["Train Y<br/>sample data<br/>[train_y.csv]"]
+end
+
+subgraph group_core["Core Runtime"]
+  node_tensor["Tensor<br/>core data structure<br/>[tensor.c]"]
+  node_ops["Ops<br/>math kernels<br/>[ops.c]"]
+  node_backward["Backward<br/>grad propagation<br/>[backward.c]"]
+  node_engine["Autograd<br/>engine<br/>[engine.c]"]
+end
+
+subgraph group_nn["Neural Net"]
+  node_linear["Linear<br/>dense layer<br/>[linear.c]"]
+  node_activations["Activations<br/>nonlinear ops<br/>[activations.c]"]
+end
+
+subgraph group_train["Training"]
+  node_loss["Losses<br/>objectives<br/>[loss.c]"]
+  node_sgd["SGD<br/>optimizer<br/>[sgd.c]"]
+end
+
+subgraph group_app["Example"]
+  node_mlp_train["MLP Train<br/>example app<br/>[mlp_train.c]"]
+end
+
+node_train_x -->|"read"| node_csv
+node_train_y -->|"read"| node_csv
+node_csv -->|"wrap"| node_tensor
+node_tensor -->|"compute"| node_ops
+node_ops -->|"feed"| node_linear
+node_linear -->|"transform"| node_activations
+node_activations -->|"score"| node_loss
+node_loss -->|"backprop"| node_engine
+node_engine -->|"dispatch"| node_backward
+node_backward -->|"accumulate"| node_tensor
+node_tensor -->|"params"| node_sgd
+node_sgd -->|"update"| linear
+node_mlp_train -->|"load"| node_csv
+node_mlp_train -->|"build"| node_tensor
+node_mlp_train -->|"model"| node_linear
+node_mlp_train -->|"loss"| node_loss
+node_mlp_train -->|"train"| node_engine
+node_mlp_train -->|"step"| node_sgd
+
+click node_tensor "https://github.com/youcef3939/cml/blob/main/tensor/tensor.c"
+click node_ops "https://github.com/youcef3939/cml/blob/main/tensor/ops.c"
+click node_backward "https://github.com/youcef3939/cml/blob/main/tensor/backward.c"
+click node_engine "https://github.com/youcef3939/cml/blob/main/autograd/engine.c"
+click node_csv "https://github.com/youcef3939/cml/blob/main/data/csv.c"
+click node_linear "https://github.com/youcef3939/cml/blob/main/nn/linear.c"
+click node_activations "https://github.com/youcef3939/cml/blob/main/nn/activations.c"
+click node_loss "https://github.com/youcef3939/cml/blob/main/nn/loss.c"
+click node_sgd "https://github.com/youcef3939/cml/blob/main/optim/sgd.c"
+click node_mlp_train "https://github.com/youcef3939/cml/blob/main/examples/mlp_train.c"
+click node_train_x "https://github.com/youcef3939/cml/blob/main/data/train_X.csv"
+click node_train_y "https://github.com/youcef3939/cml/blob/main/data/train_y.csv"
+
+classDef toneNeutral fill:#f8fafc,stroke:#334155,stroke-width:1.5px,color:#0f172a
+classDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554
+classDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+classDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+classDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337
+classDef toneIndigo fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#312e81
+classDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a
+class node_csv,node_train_x,node_train_y toneBlue
+class node_tensor,node_ops,node_backward,node_engine toneAmber
+class node_linear,node_activations toneMint
+class node_loss,node_sgd toneRose
+class node_mlp_train toneIndigo
+```
+---
+
 > "you don't really understand something until you build it in C"
